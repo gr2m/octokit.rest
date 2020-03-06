@@ -1,0 +1,40 @@
+
+/* Make page fill the viewport */
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}
+
+/* Type */
+body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 100%;
+  line-height: 1.5;
+}
+
+/* Layout */
+body > * {
+  padding: 1.5rem;
+  max-width: 33rem;
+}
+
+/* Form */
+input {
+  font-size: inherit;
+  font-family: inherit;
+  border: 1px solid hsl(0, 0%, 75%);
+  padding: 0.375em 0.75em;
+  box-sizing: border-box;
+  width: calc(100% - 4em);
+}
+input {
+  margin-top: 0.375em;
+}
+button {
+  font-size: inherit;
+  font-family: inherit;
+  border: 1px solid hsl(0, 0%, 75%);
+  padding: 0.375em 0.75em;
+}
