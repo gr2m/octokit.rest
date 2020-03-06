@@ -1,0 +1,22 @@
+{
+  "name": "octokit.rest",
+  "version": "1.0.0",
+  "description": "Sourcecode for the octokit.rest website",
+  "main": "index.js",
+  "dependencies": {
+    "now": "^17.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gr2m/octokit.rest.git"
+  },
+  "keywords": [],
+  "author": "Gregor Martynus (https://twitter.com/gr2m)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gr2m/octokit.rest/issues"
+  },
+  "homepage": "https://github.com/gr2m/octokit.rest#readme"
+}
