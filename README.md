@@ -1,2 +1,7 @@
 # octokit.rest
-Sourcode for the octokit.rest website
+
+> Sourcecode for the octokit.rest website
+
+## License
+
+[MIT](LICENSE)
