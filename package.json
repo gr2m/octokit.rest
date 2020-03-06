@@ -1,12 +1,15 @@
 {
   "name": "octokit.rest",
   "version": "1.0.0",
+  "private": true,
   "description": "Sourcecode for the octokit.rest website",
   "main": "index.js",
   "dependencies": {
     "now": "^17.0.4"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "semantic-release": "^17.0.4"
+  },
   "scripts": {},
   "repository": {
     "type": "git",
