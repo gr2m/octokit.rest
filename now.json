@@ -3,6 +3,10 @@
     {
       "src": "/(?<method>[^/]+)(?<path>/.+)",
       "dest": "/api/lookup?method=$method&path=$path"
+    },
+    {
+      "src": "/lookup",
+      "dest": "/api/lookup"
     }
   ]
 }
