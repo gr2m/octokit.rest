@@ -7,7 +7,15 @@ const regexesforPaths = Object.keys(ROUTES.paths).map(path => {
 });
 
 module.exports = async (request, response) => {
-  const method = request.query.method.toUpperCase();
+  if (request.query.route) {
+    const [method, path] = request.query.route.split(" ");
+    response.writeHead(301, {
+      Location: "/" + method + path
+    });
+    return response.end();
+  }
+
+  const method = (request.query.method || "").toUpperCase();
   const path = request.query.path;
 
   if (method && path) {
@@ -35,10 +43,10 @@ module.exports = async (request, response) => {
   <body>
     <h1>octokit.rest</h1>
 
-    <form>
+    <form action="/lookup">
       <label>
         What would you like to request?<br />
-        <input type="text" value="${method} ${regexPath}" name="request" autofocus />
+        <input type="text" value="${method} ${path}" name="route" autofocus />
       </label>
       <button type="submit">Go</button>
     </form>
@@ -61,29 +69,29 @@ module.exports = async (request, response) => {
   });
   return response.end(`<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Not Found: ${method} ${path}</title>
-  <link rel="stylesheet" href="/style.css" />
-</head>
-<body>
-  <h1>octokit.rest</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Not Found: ${method} ${path}</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <h1>octokit.rest</h1>
 
-  <form>
-    <label>
-      What would you like to request?<br />
-      <input type="text" value="${method} ${path}" name="request" autofocus />
-    </label>
-    <button type="submit">Go</button>
-  </form>
+    <form action="/lookup">
+      <label>
+        What would you like to request?<br />
+        <input type="text" value="${method} ${path}" name="route" autofocus />
+      </label>
+      <button type="submit">Go</button>
+    </form>
 
-  <article>
-    <h2>No route found for <code>${method} ${path}</code></h2>
+    <article>
+      <h2>No route found for <code>${method} ${path}</code></h2>
 
-    Sorry.
-  </article>
-</body>
+      Sorry.
+    </article>
+  </body>
 </html>
 `);
 };
