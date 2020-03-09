@@ -39,7 +39,9 @@ module.exports = async (request, response) => {
           });
 
           let parameters = [];
-          for (const {name, type, description} of Object.values(endpoint.parameters)) {
+          for (const { name, type, description } of Object.values(
+            endpoint.parameters
+          )) {
             parameters.push(`
             <tr>
               <td><code>${name}</code></td>
@@ -48,6 +50,15 @@ module.exports = async (request, response) => {
             </tr>
             `);
           }
+
+          const responseHTML = endpoint.responses.length
+            ? `<pre><code>Status: ${endpoint.responses[0].code}</code></pre>
+               <pre><code>${JSON.stringify(
+                 JSON.parse(endpoint.responses[0].examples[0].data),
+                 null,
+                 2
+               )}</code></pre>`
+            : null;
 
           return response.end(`<!DOCTYPE html>
 <html lang="en">
@@ -92,10 +103,11 @@ module.exports = async (request, response) => {
     </table>
 
     <h2>Response</h2>
-    <pre><code>Status: ${endpoint.responses[0].code}</code></pre>
-    <pre><code>${JSON.stringify(JSON.parse(endpoint.responses[0].examples[0].data), null, 2)}</code></pre>
+    ${responseHTML || "<p>No response available</p>"}
 
-    <p>See documentation on <a href="${endpoint.documentationUrl}">GitHub developer guides</a></p>
+    <p>See documentation on <a href="${
+      endpoint.documentationUrl
+    }">GitHub developer guides</a></p>
 
 <h2>JSON Dump</h2>
 <pre><code>${JSON.stringify(endpoint, null, 2)}</code></pre>
