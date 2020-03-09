@@ -1,4 +1,3 @@
-
 /* Make page fill the viewport */
 html {
   height: 100%;
@@ -17,7 +16,7 @@ body {
 /* Layout */
 body > * {
   padding: 1.5rem;
-  max-width: 33rem;
+  max-width: 45rem;
 }
 
 /* Form */
@@ -37,4 +36,73 @@ button {
   font-family: inherit;
   border: 1px solid hsl(0, 0%, 75%);
   padding: 0.375em 0.75em;
+}
+
+/* Code */
+pre {
+  border: 1px solid hsl(0, 0%, 79%);
+  line-height: 1.4em;
+  padding: 0.625em;
+  overflow: auto;
+  border-radius: 0.1875em;
+  background-color: hsl(240, 11%, 98%);
+  color: hsl(0, 0%, 22%);
+  margin: 2em 0;
+}
+code {
+  border-radius: 3px;
+  border: 1px solid hsl(0, 0%, 80%);
+  background-color: hsl(0, 0%, 98%);
+  display: inline-block;
+  padding: 0 0.4em;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+pre code {
+  border-radius: unset;
+  border: unset;
+  background-color: unset;
+  display: unset;
+  padding: unset;
+}
+
+/* Table */
+table {
+  width: 100%;
+  overflow: auto;
+  display: block;
+  margin: 1em 0;
+}
+thead {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+}
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+td,
+th {
+  padding: 0;
+}
+th {
+  border: 1px solid hsl(0, 0%, 87%);
+  padding: 0.375em 0.875em;
+  text-align: center;
+  font-weight: 700;
+}
+tbody {
+  vertical-align: middle;
+  border-color: inherit;
+}
+tr {
+  border-top: 1px solid hsl(0, 0%, 80%);
+  background-color: hsl(0, 0%, 100%);
+  vertical-align: inherit;
+}
+td {
+  border: 1px solid hsl(0, 0%, 87%);
+  padding: 0.375em 0.875em;
 }
