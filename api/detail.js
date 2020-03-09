@@ -44,7 +44,7 @@ module.exports = async (request, response) => {
             <tr>
               <td><code>${name}</code></td>
               <td><code>${type}</code></td>
-              <td>${description}</td>
+              <td>${markdown.render(description)}</td>
             </tr>
             `);
           }
