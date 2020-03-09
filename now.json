@@ -2,11 +2,11 @@
   "routes": [
     {
       "src": "/(?<method>[^/]+)(?<path>/.+)",
-      "dest": "/api/lookup?method=$method&path=$path"
+      "dest": "/api/detail?method=$method&path=$path"
     },
     {
-      "src": "/lookup",
-      "dest": "/api/lookup"
+      "src": "/search",
+      "dest": "/api/search"
     }
   ]
 }

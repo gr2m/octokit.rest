@@ -27,16 +27,16 @@ module.exports = async (request, response) => {
 
         if (operation) {
           const endpoint = parseOperation(
-            { method, path: regexPath },
+            { method, url: regexPath },
             operation
           );
+
+          const markdown = new MarkdownIt();
+          const route = `${endpoint.method} ${endpoint.url}`;
 
           response.writeHead(200, {
             "Content-Type": "text/html"
           });
-
-          const markdown = new MarkdownIt();
-          const route = `${endpoint.method} ${endpoint.url}`;
 
           return response.end(`<!DOCTYPE html>
 <html lang="en">
@@ -49,7 +49,7 @@ module.exports = async (request, response) => {
   <body>
     <h1>octokit.rest</h1>
 
-    <form action="/lookup">
+    <form action="/search">
       <label>
         What would you like to request?<br />
         <input type="text" value="${
@@ -90,7 +90,7 @@ module.exports = async (request, response) => {
   <body>
     <h1>octokit.rest</h1>
 
-    <form action="/lookup">
+    <form action="/search">
       <label>
         What would you like to request?<br />
         <input type="text" value="${method} ${path}" name="route" autofocus />
