@@ -38,6 +38,17 @@ module.exports = async (request, response) => {
             "Content-Type": "text/html"
           });
 
+          let parameters = [];
+          for (const {name, type, description} of Object.values(endpoint.parameters)) {
+            parameters.push(`
+            <tr>
+              <td><code>${name}</code></td>
+              <td><code>${type}</code></td>
+              <td>${description}</td>
+            </tr>
+            `);
+          }
+
           return response.end(`<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -65,9 +76,30 @@ module.exports = async (request, response) => {
       ${markdown.render(endpoint.description)}
     </article>
 
-    <hr>
+    <article>
+    <h2>Parameters</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${parameters.join("")}
+      </tbody>
+    </table>
 
-<pre>${JSON.stringify(endpoint, null, 2)}</pre>
+    <h2>Response</h2>
+    <pre><code>Status: ${endpoint.responses[0].code}</code></pre>
+    <pre><code>${JSON.stringify(JSON.parse(endpoint.responses[0].examples[0].data), null, 2)}</code></pre>
+
+    <p>See documentation on <a href="${endpoint.documentationUrl}">GitHub developer guides</a></p>
+
+<h2>JSON Dump</h2>
+<pre><code>${JSON.stringify(endpoint, null, 2)}</code></pre>
+    </article>
   </body>
 </html>
 `);
