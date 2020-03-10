@@ -4,30 +4,37 @@ const allEndpointPaths = Object.keys(ROUTES.paths);
 
 module.exports = async (request, response) => {
   const query = request.query.route;
+  const queryRegex = new RegExp(`(${query})`, "i");
   const { method, path } = toMethodAndPath(query);
   const results = [];
 
-  if (path) {
-    for (const endpointPath of allEndpointPaths) {
-      if (endpointPath.substr(0, path.length) !== path) continue;
+  console.log(`{query, method, path}`);
+  console.log({ query, method, path });
 
-      if (method) {
-        const operation = ROUTES.paths[endpointPath][method.toLowerCase()];
-        if (!operation) continue;
+  for (const endpointPath of allEndpointPaths) {
+    if (path && endpointPath.substr(0, path.length) !== path) continue;
 
-        results.push([method, endpointPath, operation]);
+    if (method) {
+      const operation = ROUTES.paths[endpointPath][method.toLowerCase()];
+      if (!operation) continue;
+
+      results.push([method, endpointPath, operation]);
+      continue;
+    }
+
+    for (const [method, operation] of Object.entries(
+      ROUTES.paths[endpointPath]
+    )) {
+      if (path) {
+        results.push([method.toUpperCase(), endpointPath, operation]);
         continue;
       }
 
-      for (const [method, operation] of Object.entries(
-        ROUTES.paths[endpointPath]
-      )) {
+      if (queryRegex.test(operation.summary)) {
         results.push([method.toUpperCase(), endpointPath, operation]);
       }
     }
   }
-
-  const route = method ? [method, path].join(" ") : path;
 
   response.writeHead(200, {
     "Content-Type": "text/html"
@@ -37,9 +44,14 @@ module.exports = async (request, response) => {
     results
       .filter(Boolean)
       .map(([method, path, operation]) => {
-        const regex = new RegExp(`(${query})`, "i");
-        const route = `${method} ${path}`.replace(regex, `<mark>$1</mark>`);
-        const summary = operation.summary.replace(regex, `<mark>$1</mark>`);
+        const route = `${method} ${path}`.replace(
+          queryRegex,
+          `<mark>$1</mark>`
+        );
+        const summary = operation.summary.replace(
+          queryRegex,
+          `<mark>$1</mark>`
+        );
         return `<article>
   <a href="/${method}/${path}">
     ${summary}
@@ -47,14 +59,14 @@ module.exports = async (request, response) => {
   </a>
 </article>`;
       })
-      .join("\n") || `<p>No results found for <code>${route}</code>`;
+      .join("\n") || `<p>No results found for <code>${query}</code>`;
 
   return response.end(`<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Search: "${route}"</title>
+<title>Search: "${query}"</title>
 <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
@@ -63,7 +75,7 @@ module.exports = async (request, response) => {
 <form action="/search">
 <label>
 What would you like to request?<br />
-<input type="text" value="${route}" name="route" autofocus />
+<input type="text" value="${query}" name="route" autofocus />
 </label>
 <button type="submit">Go</button>
 </form>
@@ -83,9 +95,13 @@ function toMethodAndPath(query) {
     };
   }
 
-  const parts = query.split(" ");
-  const method = (parts[0] || "").toUpperCase();
-  const path = parts[1];
+  if (/^(DELETE|GET|HEAD|PATCH|POST|PUT) \//i.test(query)) {
+    const parts = query.split(" ");
+    const method = (parts[0] || "").toUpperCase();
+    const path = parts[1];
 
-  return { method, path };
+    return { method, path };
+  }
+
+  return {};
 }
