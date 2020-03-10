@@ -4,6 +4,10 @@
   "private": true,
   "description": "Sourcecode for the octokit.rest website",
   "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=13.10.1"
+  },
   "dependencies": {
     "markdown-it": "^10.0.0",
     "now": "^17.0.4"

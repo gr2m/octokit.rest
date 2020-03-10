@@ -1,6 +1,9 @@
-const ROUTES = require("@octokit/routes/api.github.com.json");
+import { OPENAPI_PATHS } from "../components/openapi-paths.js";
+import { searchResults } from "../components/search-results.js"
 
-const allEndpointPaths = Object.keys(ROUTES.paths);
+const allEndpointPaths = Object.keys(OPENAPI_PATHS);
+
+console.log("process.version", process.version);
 
 module.exports = async (request, response) => {
   const query = request.query.route;
@@ -14,8 +17,11 @@ module.exports = async (request, response) => {
   for (const endpointPath of allEndpointPaths) {
     if (path && endpointPath.substr(0, path.length) !== path) continue;
 
+    console.log("allEndpointPaths", allEndpointPaths);
+    console.log("endpointPath", endpointPath);
+
     if (method) {
-      const operation = ROUTES.paths[endpointPath][method.toLowerCase()];
+      const operation = OPENAPI_PATHS[endpointPath][method.toLowerCase()];
       if (!operation) continue;
 
       results.push([method, endpointPath, operation]);
@@ -23,7 +29,7 @@ module.exports = async (request, response) => {
     }
 
     for (const [method, operation] of Object.entries(
-      ROUTES.paths[endpointPath]
+      OPENAPI_PATHS[endpointPath]
     )) {
       if (path) {
         results.push([method.toUpperCase(), endpointPath, operation]);
@@ -39,27 +45,6 @@ module.exports = async (request, response) => {
   response.writeHead(200, {
     "Content-Type": "text/html"
   });
-
-  const resultsHTML =
-    results
-      .filter(Boolean)
-      .map(([method, path, operation]) => {
-        const route = `${method} ${path}`.replace(
-          queryRegex,
-          `<mark>$1</mark>`
-        );
-        const summary = operation.summary.replace(
-          queryRegex,
-          `<mark>$1</mark>`
-        );
-        return `<article>
-  <a href="/${method}/${path}">
-    ${summary}
-    (<code>${route}</code>)
-  </a>
-</article>`;
-      })
-      .join("\n") || `<p>No results found for <code>${query}</code>`;
 
   return response.end(`<!DOCTYPE html>
 <html lang="en">
@@ -82,7 +67,7 @@ What would you like to request?<br />
 
 <h2>Results</h2>
 
-${resultsHTML}
+${searchResults({ query, results })}
 </body>
 </html>
 `);
