@@ -3,7 +3,8 @@ const ROUTES = require("@octokit/routes/api.github.com.json");
 const allEndpointPaths = Object.keys(ROUTES.paths);
 
 module.exports = async (request, response) => {
-  const { method, path } = toMethodAndPath(request);
+  const query = request.query.route;
+  const { method, path } = toMethodAndPath(query);
   const results = [];
 
   if (path) {
@@ -36,10 +37,13 @@ module.exports = async (request, response) => {
     results
       .filter(Boolean)
       .map(([method, path, operation]) => {
+        const regex = new RegExp(`(${query})`, "i");
+        const route = `${method} ${path}`.replace(regex, `<mark>$1</mark>`);
+        const summary = operation.summary.replace(regex, `<mark>$1</mark>`);
         return `<article>
   <a href="/${method}/${path}">
-    ${operation.summary}
-    (<code>${method} ${path}</code>)
+    ${summary}
+    (<code>${route}</code>)
   </a>
 </article>`;
       })
@@ -72,14 +76,14 @@ ${resultsHTML}
 `);
 };
 
-function toMethodAndPath(request) {
-  if (/^\//.test(request.query.route)) {
+function toMethodAndPath(query) {
+  if (/^\//.test(query)) {
     return {
-      path: request.query.route
+      path: query
     };
   }
 
-  const parts = request.query.route.split(" ");
+  const parts = query.split(" ");
   const method = (parts[0] || "").toUpperCase();
   const path = parts[1];
 
