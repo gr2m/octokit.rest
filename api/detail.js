@@ -57,8 +57,7 @@ module.exports = async (request, response) => {
           )) {
           previews.push(`
             <section class="note">
-              <h2>Note:</h2>
-              <h3>${name} ${required ? "(required)" : ""}</h3>
+              <h2>${name} ${required ? "(required)" : ""}</h2>
               ${markdown.render(note)}
             </section>
             `);
