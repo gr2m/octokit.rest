@@ -119,10 +119,9 @@ td {
   border: 1px solid hsl(202, 48%, 72%);
   background-color: hsl(204, 70%, 91%);
 }
-.note h2,
-.note h3 {
-  display: inline;
+.note h2 {
   font-size: inherit;
+  text-transform: capitalize;
 }
 .note > :first-child {
   margin-top: 0;
