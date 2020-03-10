@@ -51,6 +51,19 @@ module.exports = async (request, response) => {
             `);
           }
 
+          let previews = [];
+          for (const { name, note, required } of Object.values(
+            endpoint.previews
+          )) {
+          previews.push(`
+            <section class="note">
+              <h2>Note:</h2>
+              <h3>${name} ${required ? "(required)" : ""}</h3>
+              ${markdown.render(note)}
+            </section>
+            `);
+          }
+
           const responseHTML = endpoint.responses.length
             ? `<pre><code>Status: ${endpoint.responses[0].code}</code></pre>
                <pre><code>${JSON.stringify(
@@ -58,7 +71,7 @@ module.exports = async (request, response) => {
                  null,
                  2
                )}</code></pre>`
-            : null;
+            : "<p>No response available</p>";
 
           return response.end(`<!DOCTYPE html>
 <html lang="en">
@@ -81,37 +94,43 @@ module.exports = async (request, response) => {
       <button type="submit">Go</button>
     </form>
 
-    <article>
+    <section>
       <h2>${endpoint.name} (<code>${route}</code>)</h2>
 
       ${markdown.render(endpoint.description)}
-    </article>
+    </section>
 
-    <article>
-    <h2>Parameters</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${parameters.join("")}
-      </tbody>
-    </table>
+    ${previews.join("")}
 
-    <h2>Response</h2>
-    ${responseHTML || "<p>No response available</p>"}
+    <section>
+      <h2>Parameters</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${parameters.join("")}
+        </tbody>
+      </table>
+    </section>
 
-    <p>See documentation on <a href="${
-      endpoint.documentationUrl
-    }">GitHub developer guides</a></p>
+    <section>
+      <h2>Response</h2>
+      ${responseHTML}
 
-<h2>JSON Dump</h2>
-<pre><code>${JSON.stringify(endpoint, null, 2)}</code></pre>
-    </article>
+      <p>See documentation on <a href="${
+        endpoint.documentationUrl
+      }">GitHub developer guides</a></p>
+    </section>
+
+    <section>
+      <h2>JSON Dump</h2>
+      <pre><code>${JSON.stringify(endpoint, null, 2)}</code></pre>
+    </section>
   </body>
 </html>
 `);
@@ -142,11 +161,11 @@ module.exports = async (request, response) => {
       <button type="submit">Go</button>
     </form>
 
-    <article>
+    <section>
       <h2>No route found for <code>${method} ${path}</code></h2>
 
       Sorry.
-    </article>
+    </section>
   </body>
 </html>
 `);

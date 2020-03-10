@@ -13,8 +13,14 @@ body {
   line-height: 1.5;
 }
 
+/* Color */
+a {
+  color: hsl(210, 53%, 51%);
+}
+
 /* Layout */
 body > * {
+  margin: 3rem auto;
   padding: 1.5rem;
   max-width: 45rem;
 }
@@ -105,4 +111,22 @@ tr {
 td {
   border: 1px solid hsl(0, 0%, 87%);
   padding: 0.375em 0.875em;
+}
+
+/* Note */
+.note {
+  color: hsl(210, 50%, 30%);
+  border: 1px solid hsl(202, 48%, 72%);
+  background-color: hsl(204, 70%, 91%);
+}
+.note h2,
+.note h3 {
+  display: inline;
+  font-size: inherit;
+}
+.note > :first-child {
+  margin-top: 0;
+}
+.note > :last-child {
+  margin-bottom: 0;
 }
