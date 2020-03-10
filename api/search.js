@@ -3,21 +3,30 @@ const ROUTES = require("@octokit/routes/api.github.com.json");
 const allEndpointPaths = Object.keys(ROUTES.paths);
 
 module.exports = async (request, response) => {
-  const parts = request.query.route.split(" ");
-  const method = (parts[0] || "").toUpperCase();
-  const path = parts[1];
+  const { method, path } = toMethodAndPath(request);
   const results = [];
 
-  if (method && path) {
+  if (path) {
     for (const endpointPath of allEndpointPaths) {
       if (endpointPath.substr(0, path.length) !== path) continue;
 
-      const operation = ROUTES.paths[endpointPath][method.toLowerCase()];
-      if (!operation) continue;
+      if (method) {
+        const operation = ROUTES.paths[endpointPath][method.toLowerCase()];
+        if (!operation) continue;
 
-      results.push([endpointPath, operation]);
+        results.push([method, endpointPath, operation]);
+        continue;
+      }
+
+      for (const [method, operation] of Object.entries(
+        ROUTES.paths[endpointPath]
+      )) {
+        results.push([method.toUpperCase(), endpointPath, operation]);
+      }
     }
   }
+
+  const route = method ? [method, path].join(" ") : path;
 
   response.writeHead(200, {
     "Content-Type": "text/html"
@@ -26,7 +35,7 @@ module.exports = async (request, response) => {
   const resultsHTML =
     results
       .filter(Boolean)
-      .map(([path, operation]) => {
+      .map(([method, path, operation]) => {
         return `<article>
   <a href="/${method}/${path}">
     ${operation.summary}
@@ -34,14 +43,14 @@ module.exports = async (request, response) => {
   </a>
 </article>`;
       })
-      .join("\n") || `<p>No results found for <code>${method} ${path}</code>`;
+      .join("\n") || `<p>No results found for <code>${route}</code>`;
 
   return response.end(`<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Search: "${method} ${path}"</title>
+<title>Search: "${route}"</title>
 <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
@@ -50,7 +59,7 @@ module.exports = async (request, response) => {
 <form action="/search">
 <label>
 What would you like to request?<br />
-<input type="text" value="${method} ${path}" name="route" autofocus />
+<input type="text" value="${route}" name="route" autofocus />
 </label>
 <button type="submit">Go</button>
 </form>
@@ -62,3 +71,17 @@ ${resultsHTML}
 </html>
 `);
 };
+
+function toMethodAndPath(request) {
+  if (/^\//.test(request.query.route)) {
+    return {
+      path: request.query.route
+    };
+  }
+
+  const parts = request.query.route.split(" ");
+  const method = (parts[0] || "").toUpperCase();
+  const path = parts[1];
+
+  return { method, path };
+}
