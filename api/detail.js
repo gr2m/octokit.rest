@@ -1,9 +1,9 @@
-const ROUTES = require("@octokit/routes/api.github.com.json");
+import { OPENAPI_PATHS } from "../public/components/openapi-paths.js";
 const MarkdownIt = require("markdown-it");
 
 const parseOperation = require("./_lib/parse-operation");
 
-const regexesforPaths = Object.keys(ROUTES.paths).map(path => {
+const regexesforPaths = Object.keys(OPENAPI_PATHS).map(path => {
   const regex = path.replace(/\{\w+\}/g, "[^/]+");
   return [new RegExp(`^${regex}$`), path];
 });
@@ -23,7 +23,7 @@ module.exports = async (request, response) => {
   if (method && path) {
     for (const [regex, regexPath] of regexesforPaths) {
       if (regex.test(path)) {
-        const operation = ROUTES.paths[regexPath][method.toLowerCase()];
+        const operation = OPENAPI_PATHS[regexPath][method.toLowerCase()];
 
         if (operation) {
           const endpoint = parseOperation(
