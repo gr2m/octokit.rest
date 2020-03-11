@@ -12,13 +12,13 @@ const regexesforPaths = Object.keys(OPENAPI_PATHS).map(path => {
 });
 
 module.exports = async (request, response) => {
-  if (request.query.route) {
-    const [method, path] = request.query.route.split(" ");
-    response.writeHead(301, {
-      Location: "/" + method + path
-    });
-    return response.end();
-  }
+  // if (request.query.route) {
+  //   const [method, path] = request.query.route.split(" ");
+  //   response.writeHead(301, {
+  //     Location: "/" + method + path
+  //   });
+  //   return response.end();
+  // }
 
   const method = (request.query.method || "").toUpperCase();
   const path = request.query.path;
@@ -47,7 +47,11 @@ module.exports = async (request, response) => {
           )) {
             parameters.push(`
             <tr>
-              <td>${parameterField({ name, type, value: request.query[name] })}</td>
+              <td>${parameterField({
+                name,
+                type,
+                value: request.query[name] || ""
+              })}</td>
               <td><code>${type}</code></td>
               <td>${markdown.render(description)}</td>
             </tr>
@@ -79,6 +83,20 @@ module.exports = async (request, response) => {
             "Content-Type": "text/html",
             "Cache-Control": "s-maxage=604800"
           });
+
+          const { path: url, token, ...rest } = request.query;
+          const requestOptions = {
+            baseUrl: "https://api.github.com",
+            method,
+            url,
+            headers: {
+              authorization: `token ${token}`
+            },
+            mediaType: {
+              previews: []
+            },
+            ...rest
+          };
 
           return response.end(`<!DOCTYPE html>
 <html lang="en">
@@ -125,7 +143,8 @@ module.exports = async (request, response) => {
               <td>
                 <label>
                   <code>token</code><br />
-                  <input type="text" name="token" value="${request.query.token}" />
+                  <input type="text" name="token" value="${request.query
+                    .token || ""}" />
                 </label>
               </td>
               <td><code>string</code></td>
@@ -140,7 +159,7 @@ module.exports = async (request, response) => {
       <form>
         <!-- TODO: Add hidden fields -->
   
-        ${requestPreview(request.query)}
+        ${requestPreview(requestOptions)}
 
         <p><button type="submit">Send request</button></p>
       </form>

@@ -4,7 +4,9 @@ function radioFieldSet({ name, options, selectedValue }) {
     items.push(`
       <li>
         <label>
-          <input type="radio" name="${name}" value="${option}" ${selectedValue === option ? `checked` : ""} />
+          <input type="radio" name="${name}" value="${option}" ${
+      selectedValue === option ? `checked` : ""
+    } />
           <code>${option}</code>
         </label>
       </li>
