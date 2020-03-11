@@ -1,5 +1,5 @@
 import { OPENAPI_PATHS } from "../public/components/openapi-paths.js";
-import { searchResults } from "../public/components/search-results.js"
+import { searchResults } from "../public/components/search-results.js";
 
 const allEndpointPaths = Object.keys(OPENAPI_PATHS);
 
@@ -35,12 +35,14 @@ module.exports = async (request, response) => {
   }
 
   if (request.headers.accept === "application/json") {
+    response.setHeader("Cache-Control", "s-maxage=604800");
     response.json(results);
     return;
   }
 
   response.writeHead(200, {
-    "Content-Type": "text/html"
+    "Content-Type": "text/html",
+    "Cache-Control": "s-maxage=604800"
   });
 
   return response.end(`<!DOCTYPE html>

@@ -2,10 +2,12 @@
   "routes": [
     {
       "src": "/(?<method>(GET|PUT|POST|PATCH|DELETE|HEAD))(?<path>/.+)",
+      "headers": { "cache-control": "s-maxage=604800" },
       "dest": "/api/detail?method=$method&path=$path"
     },
     {
       "src": "/search",
+      "headers": { "cache-control": "s-maxage=604800" },
       "dest": "/api/search"
     }
   ]
