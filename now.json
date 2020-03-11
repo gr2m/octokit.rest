@@ -1,7 +1,7 @@
 {
   "routes": [
     {
-      "src": "/(?<method>[^/]+)(?<path>/.+)",
+      "src": "/(?<method>(GET|PUT|POST|PATCH|DELETE|HEAD))(?<path>/.+)",
       "dest": "/api/detail?method=$method&path=$path"
     },
     {

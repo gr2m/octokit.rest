@@ -1,24 +1,16 @@
-import { OPENAPI_PATHS } from "../components/openapi-paths.js";
-import { searchResults } from "../components/search-results.js"
+import { OPENAPI_PATHS } from "../public/components/openapi-paths.js";
+import { searchResults } from "../public/components/search-results.js"
 
 const allEndpointPaths = Object.keys(OPENAPI_PATHS);
 
-console.log("process.version", process.version);
-
 module.exports = async (request, response) => {
-  const query = request.query.route;
+  const query = request.query.query;
   const queryRegex = new RegExp(`(${query})`, "i");
   const { method, path } = toMethodAndPath(query);
   const results = [];
 
-  console.log(`{query, method, path}`);
-  console.log({ query, method, path });
-
   for (const endpointPath of allEndpointPaths) {
     if (path && endpointPath.substr(0, path.length) !== path) continue;
-
-    console.log("allEndpointPaths", allEndpointPaths);
-    console.log("endpointPath", endpointPath);
 
     if (method) {
       const operation = OPENAPI_PATHS[endpointPath][method.toLowerCase()];
@@ -42,6 +34,11 @@ module.exports = async (request, response) => {
     }
   }
 
+  if (request.headers.accept === "application/json") {
+    response.json(results);
+    return;
+  }
+
   response.writeHead(200, {
     "Content-Type": "text/html"
   });
@@ -60,14 +57,18 @@ module.exports = async (request, response) => {
 <form action="/search">
 <label>
 What would you like to request?<br />
-<input type="text" value="${query}" name="route" autofocus />
+<input type="text" value="${query}" name="query" autofocus />
 </label>
 <button type="submit">Go</button>
 </form>
 
 <h2>Results</h2>
 
+<div id="results">
 ${searchResults({ query, results })}
+</div>
+
+<script type="module" src="/client.js"></script>
 </body>
 </html>
 `);

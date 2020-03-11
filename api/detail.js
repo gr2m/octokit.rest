@@ -88,7 +88,7 @@ module.exports = async (request, response) => {
         What would you like to request?<br />
         <input type="text" value="${
           endpoint.method
-        } ${path}" name="route" autofocus />
+        } ${path}" name="query" autofocus />
       </label>
       <button type="submit">Go</button>
     </form>
@@ -155,7 +155,7 @@ module.exports = async (request, response) => {
     <form action="/search">
       <label>
         What would you like to request?<br />
-        <input type="text" value="${method} ${path}" name="route" autofocus />
+        <input type="text" value="${method} ${path}" name="query" autofocus />
       </label>
       <button type="submit">Go</button>
     </form>
