@@ -161,12 +161,14 @@ module.exports = async (request, response) => {
   
         ${requestPreview(requestOptions)}
 
+        <!--
         <p><button type="submit">Send request</button></p>
+        -->
       </form>
     </section>
 
     <section>
-      <h2>Response</h2>
+      <h2>Example Response</h2>
       ${responseHTML}
 
       <p>See documentation on <a href="${
