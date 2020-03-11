@@ -1,4 +1,7 @@
 import { OPENAPI_PATHS } from "../public/components/openapi-paths.js";
+import { parameterField } from "../public/components/parameter-field.js";
+import { requestPreview } from "../public/components/request-preview.js";
+
 const MarkdownIt = require("markdown-it");
 
 const parseOperation = require("./_lib/parse-operation");
@@ -44,7 +47,7 @@ module.exports = async (request, response) => {
           )) {
             parameters.push(`
             <tr>
-              <td><code>${name}</code></td>
+              <td>${parameterField({ name, type, value: request.query[name] })}</td>
               <td><code>${type}</code></td>
               <td>${markdown.render(description)}</td>
             </tr>
@@ -108,18 +111,39 @@ module.exports = async (request, response) => {
 
     <section>
       <h2>Parameters</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${parameters.join("")}
-        </tbody>
-      </table>
+      <form>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <label>
+                  <code>token</code><br />
+                  <input type="text" name="token" value="${request.query.token}" />
+                </label>
+              </td>
+              <td><code>string</code></td>
+              <td><p>The token will be passed in the authorization header.</p></td>
+            </tr>
+            ${parameters.join("")}
+          </tbody>
+        </table>
+        <p><button type="submit">Update request preview</button></p>
+      </form>
+  
+      <form>
+        <!-- TODO: Add hidden fields -->
+  
+        ${requestPreview(request.query)}
+
+        <p><button type="submit">Send request</button></p>
+      </form>
     </section>
 
     <section>

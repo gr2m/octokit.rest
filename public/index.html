@@ -25,5 +25,132 @@
         <a href="/search?query=label"><code>label</code></a>
       </p>
     </form>
+
+    <form>
+      <h2>Parameters</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <label>
+                <code>token</code><br />
+                <input type="text" name="token" />
+              </label>
+            </td>
+            <td><code>string</code></td>
+            <td><p>The token will be passed in the authorization header.</p></td>
+          </tr>
+  
+          <tr>
+            <td>
+              <label>
+                <code>owner</code><br />
+                <input type="text" name="owner" />
+              </label>
+            </td>
+            <td><code>string</code></td>
+            <td><p>owner parameter</p></td>
+          </tr>
+
+          <tr>
+            <td>
+              <label>
+                <code>repo</code><br />
+                <input type="text" name="repo" />
+              </label>
+            </td>
+            <td><code>string</code></td>
+            <td><p>repo parameter</p></td>
+          </tr>
+
+          <tr>
+            <td>
+              <label>
+                <code>issue_number</code><br />
+                <input type="number" name="issue_number" />
+              </label>
+            </td>
+            <td><code>integer</code></td>
+            <td><p>issue_number parameter</p></td>
+          </tr>
+
+          <tr>
+            <td>
+              <fieldset>
+                <legend>
+                  <code>lock_reason</code>
+                </legend>
+                <ol>
+                  <li>
+                    <label>
+                      <input type="radio" name="lock_reason" value="off-topic" />
+                      <code>off-topic</code>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="radio" name="lock_reason" value="too heated" />
+                      <code>too heated</code>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="radio" name="lock_reason" value="resolved" />
+                      <code>resolved</code>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="radio" name="lock_reason" value="spam" />
+                      <code>spam</code>
+                    </label>
+                  </li>
+                </ol>
+              </fieldset>
+            </td>
+            <td><code>string</code></td>
+            <td>
+              <p>
+                The reason for locking the issue or pull request conversation.
+                Lock will fail if you don't use one of these reasons:<br />
+                * <code>off-topic</code><br />
+                * <code>too heated</code><br />
+                * <code>resolved</code><br />
+                * <code>spam</code>
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <section>
+        <h3>Request</h3>
+  <pre><code>PUT https://api.github.com/repos/${owner}/${repo}/issues/${issue_number}/lock
+  Authorization: token ${token}
+
+  {
+    "lock_reason": ${lock_reason}
+  }
+  </code></pre>
+      </section>
+
+      <p><button type="submit">Send request</button></p>
+    </form>
+
+    <section>
+      <h2>Response</h2>
+<pre><code>
+{
+  ${response}
+}
+</code></pre>
+    </section>
   </body>
 </html>
