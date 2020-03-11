@@ -55,7 +55,7 @@ module.exports = async (request, response) => {
           for (const { name, note, required } of Object.values(
             endpoint.previews
           )) {
-          previews.push(`
+            previews.push(`
             <section class="note">
               <h2>${name} Preview ${required ? "(required)" : ""}</h2>
               ${markdown.render(note)}
@@ -71,6 +71,11 @@ module.exports = async (request, response) => {
                  2
                )}</code></pre>`
             : "<p>No response available</p>";
+
+          response.writeHead(200, {
+            "Content-Type": "text/html",
+            "Cache-Control": "s-maxage=604800"
+          });
 
           return response.end(`<!DOCTYPE html>
 <html lang="en">
