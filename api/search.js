@@ -70,7 +70,7 @@ What would you like to request?<br />
 ${searchResults({ query, results })}
 </div>
 
-<script type="module" src="/client.js"></script>
+<script type="module" src="/search.js"></script>
 </body>
 </html>
 `);
