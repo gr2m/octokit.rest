@@ -12,6 +12,10 @@ ${Object.entries(headers)
 ${body ? JSON.stringify(body, null, 2) : ""}
 </code></pre>
     </section>
+
+    <input type="hidden" name="requestOptions" value="${encodeURIComponent(
+      JSON.stringify(options)
+    )}">
   `;
 }
 

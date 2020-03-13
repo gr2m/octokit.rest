@@ -1,4 +1,5 @@
 import { request as octokitRequest } from "@octokit/request";
+import fetch from "node-fetch";
 
 import { OPENAPI_PATHS } from "../public/components/openapi-paths.js";
 import { parameterField } from "../public/components/parameter-field.js";
@@ -21,7 +22,13 @@ module.exports = async (request, response) => {
   let apiResponse;
   if (request.method === "POST") {
     const options = JSON.parse(decodeURIComponent(request.body.requestOptions));
-    apiResponse = await octokitRequest(options);
+    const { url, ...rest } = octokitRequest.endpoint(options);
+    const response = await fetch(url, rest);
+    apiResponse = {
+      status: response.status,
+      headers: Object.fromEntries(response.headers.entries()),
+      data: await response.json()
+    };
   }
 
   if (method && path) {
@@ -84,6 +91,7 @@ module.exports = async (request, response) => {
           const options = Object.fromEntries(
             Object.entries(rest).filter(([key, value]) => value !== "")
           );
+
           const requestOptions = {
             baseUrl: "https://api.github.com",
             method,
@@ -130,7 +138,7 @@ module.exports = async (request, response) => {
 
     <section>
       <h2>Parameters</h2>
-      <form>
+      <form id="parametersForm">
         <table>
           <thead>
             <tr>
@@ -158,11 +166,9 @@ module.exports = async (request, response) => {
       </form>
   
       <form method="POST">
-        <input type="hidden" name="requestOptions" value="${encodeURIComponent(
-          JSON.stringify(requestOptions)
-        )}">
-
+        <div id="requestPreview">
         ${requestPreview(requestOptions)}
+        </div> 
 
         <p><button type="submit">Send request</button></p>
       </form>
@@ -173,6 +179,8 @@ module.exports = async (request, response) => {
     <p>See documentation on <a href="${
       endpoint.documentationUrl
     }">GitHub developer guides</a></p>
+
+    <script type="module" src="/detail.js"></script>
   </body>
 </html>
 `);
