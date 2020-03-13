@@ -1,6 +1,6 @@
 {
   "name": "octokit.rest",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "private": true,
   "description": "Sourcecode for the octokit.rest website",
   "main": "index.js",
@@ -9,12 +9,13 @@
     "node": "12.x"
   },
   "dependencies": {
+    "@octokit/request": "^5.3.2",
     "markdown-it": "^10.0.0"
   },
   "devDependencies": {
     "@octokit/routes": "27.8.0",
-    "semantic-release": "^17.0.4",
-    "now": "^17.0.4"
+    "now": "^17.0.4",
+    "semantic-release": "^17.0.4"
   },
   "scripts": {
     "start": "now dev"

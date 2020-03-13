@@ -1,6 +1,9 @@
+import { request as octokitRequest } from "@octokit/request";
+
 import { OPENAPI_PATHS } from "../public/components/openapi-paths.js";
 import { parameterField } from "../public/components/parameter-field.js";
 import { requestPreview } from "../public/components/request-preview.js";
+import { getResponseHTML } from "../public/components/get-response-html.js";
 
 const MarkdownIt = require("markdown-it");
 
@@ -12,16 +15,14 @@ const regexesforPaths = Object.keys(OPENAPI_PATHS).map(path => {
 });
 
 module.exports = async (request, response) => {
-  // if (request.query.route) {
-  //   const [method, path] = request.query.route.split(" ");
-  //   response.writeHead(301, {
-  //     Location: "/" + method + path
-  //   });
-  //   return response.end();
-  // }
-
   const method = (request.query.method || "").toUpperCase();
   const path = request.query.path;
+
+  let apiResponse;
+  if (request.method === "POST") {
+    const options = JSON.parse(decodeURIComponent(request.body.requestOptions));
+    apiResponse = await octokitRequest(options);
+  }
 
   if (method && path) {
     for (const [regex, regexPath] of regexesforPaths) {
@@ -70,14 +71,9 @@ module.exports = async (request, response) => {
             `);
           }
 
-          const responseHTML = endpoint.responses.length
-            ? `<pre><code>Status: ${endpoint.responses[0].code}</code></pre>
-               <pre><code>${JSON.stringify(
-                 JSON.parse(endpoint.responses[0].examples[0].data),
-                 null,
-                 2
-               )}</code></pre>`
-            : "<p>No response available</p>";
+          const exampleResponse = endpoint.responses.length
+            ? endpoint.responses[0]
+            : null;
 
           response.writeHead(200, {
             "Content-Type": "text/html",
@@ -85,17 +81,22 @@ module.exports = async (request, response) => {
           });
 
           const { path: url, token, ...rest } = request.query;
+          const options = Object.fromEntries(
+            Object.entries(rest).filter(([key, value]) => value !== "")
+          );
           const requestOptions = {
             baseUrl: "https://api.github.com",
             method,
             url,
             headers: {
-              authorization: `token ${token}`
+              authorization: `token ${token}`,
+              accept: "application/vnd.github.v3+json",
+              "user-agent": `octokit.rest`
             },
             mediaType: {
               previews: []
             },
-            ...rest
+            ...options
           };
 
           return response.end(`<!DOCTYPE html>
@@ -156,30 +157,22 @@ module.exports = async (request, response) => {
         <p><button type="submit">Update request preview</button></p>
       </form>
   
-      <form>
-        <!-- TODO: Add hidden fields -->
-  
+      <form method="POST">
+        <input type="hidden" name="requestOptions" value="${encodeURIComponent(
+          JSON.stringify(requestOptions)
+        )}">
+
         ${requestPreview(requestOptions)}
 
-        <!--
         <p><button type="submit">Send request</button></p>
-        -->
       </form>
     </section>
 
-    <section>
-      <h2>Example Response</h2>
-      ${responseHTML}
+    ${getResponseHTML({ exampleResponse, apiResponse })}
 
-      <p>See documentation on <a href="${
-        endpoint.documentationUrl
-      }">GitHub developer guides</a></p>
-    </section>
-
-    <section>
-      <h2>JSON Dump</h2>
-      <pre><code>${JSON.stringify(endpoint, null, 2)}</code></pre>
-    </section>
+    <p>See documentation on <a href="${
+      endpoint.documentationUrl
+    }">GitHub developer guides</a></p>
   </body>
 </html>
 `);
