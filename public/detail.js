@@ -2,8 +2,9 @@ import { requestPreview } from "/components/request-preview.js";
 
 const $parametersForm = document.querySelector(`#parametersForm`);
 const $requestPreview = document.querySelector(`#requestPreview`);
+const $requestPreviewForm = document.querySelector(`#request-preview`);
 
-$parametersForm.addEventListener("submit", event => {
+function updateRequestPreview(event) {
   const form = new FormData($parametersForm);
   const { token, ...rest } = Object.fromEntries(form.entries());
 
@@ -37,6 +38,13 @@ $parametersForm.addEventListener("submit", event => {
     query.append(parameter, value);
   }
   window.history.pushState({}, null, `?${query}`);
+}
 
+$parametersForm.addEventListener("keyup", updateRequestPreview);
+$parametersForm.addEventListener("submit", event => {
   event.preventDefault();
+  $requestPreviewForm.submit();
 });
+
+const $submitButton = $parametersForm.querySelector("button");
+$submitButton.style.display = "none";
