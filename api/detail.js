@@ -123,7 +123,7 @@ module.exports = async (request, response) => {
         What would you like to request?<br />
         <input type="text" value="${
           endpoint.method
-        } ${path}" name="query" autofocus />
+        } ${path}" name="query" />
       </label>
       <button type="submit">Go</button>
     </form>
@@ -138,7 +138,7 @@ module.exports = async (request, response) => {
 
     <section>
       <h2>Parameters</h2>
-      <form id="parametersForm">
+      <form action="#request-preview" id="parametersForm">
         <table>
           <thead>
             <tr>
@@ -165,7 +165,7 @@ module.exports = async (request, response) => {
         <p><button type="submit">Update request preview</button></p>
       </form>
   
-      <form method="POST">
+      <form action="#request-preview" method="POST" id="request-preview">
         <div id="requestPreview">
         ${requestPreview(requestOptions)}
         </div> 
@@ -206,7 +206,7 @@ module.exports = async (request, response) => {
     <form action="/search">
       <label>
         What would you like to request?<br />
-        <input type="text" value="${method} ${path}" name="query" autofocus />
+        <input type="text" value="${method} ${path}" name="query" />
       </label>
       <button type="submit">Go</button>
     </form>

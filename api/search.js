@@ -59,7 +59,7 @@ module.exports = async (request, response) => {
 <form action="/search">
 <label>
 What would you like to request?<br />
-<input type="text" value="${query}" name="query" autofocus />
+<input type="text" value="${query}" name="query" />
 </label>
 <button type="submit">Go</button>
 </form>
