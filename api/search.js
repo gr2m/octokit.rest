@@ -1,6 +1,6 @@
 import { OPENAPI_PATHS } from "../public/components/openapi-paths.js";
-import { searchResults } from "../public/components/search-results.js";
 import { pageTitle } from "../public/components/page-title.js";
+import { search } from "../public/components/search.js";
 
 const allEndpointPaths = Object.keys(OPENAPI_PATHS);
 
@@ -59,16 +59,8 @@ module.exports = async (request, response) => {
 <body>
 <h1>octokit.rest</h1>
 
-<form action="/">
-<label>
-What would you like to request?<br />
-<input type="text" value="${query}" name="query" />
-</label>
-<button type="submit">Go</button>
-</form>
-
-<div id="results">
-${searchResults({ query, results })}
+<div id="search">
+${search({ query, results })}
 </div>
 
 <script type="module" src="/search.js"></script>
