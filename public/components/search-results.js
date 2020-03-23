@@ -24,22 +24,22 @@ export function searchResults({ query, results }) {
   if (query) {
     return `<p>
     No results found for <code>${query}</code>. Try these examples: <br />
-    <a href="/search?query=GET /user"><code>GET /user</code></a
+    <a href="/?query=GET /user"><code>GET /user</code></a
     >,
-    <a href="/search?query=/repos/{owner}/{repo}"
+    <a href="/?query=/repos/{owner}/{repo}"
       ><code>/repos/{owner}/{repo}</code></a
     >,
-    <a href="/search?query=label"><code>label</code></a>
+    <a href="/?query=label"><code>label</code></a>
   </p>`;
   }
 
   return `<p>
   Examples: <br />
-  <a href="/search?query=GET /user"><code>GET /user</code></a
+  <a href="/?query=GET /user"><code>GET /user</code></a
   >,
-  <a href="/search?query=/repos/{owner}/{repo}"
+  <a href="/?query=/repos/{owner}/{repo}"
     ><code>/repos/{owner}/{repo}</code></a
   >,
-  <a href="/search?query=label"><code>label</code></a>
+  <a href="/?query=label"><code>label</code></a>
 </p>`;
 }
