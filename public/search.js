@@ -1,4 +1,5 @@
 import { searchResults } from "/components/search-results.js";
+import { pageTitle } from "/components/page-title.js";
 
 const $queryField = document.querySelector(`input[name="query"]`);
 const $results = document.querySelector(`#results`);
@@ -11,9 +12,10 @@ $queryField.addEventListener("keyup", async function(event) {
 
   window.history.pushState(
     {},
-    `Search: ${query}`,
+    pageTitle(query),
     query ? `/?query=${query}` : "/"
   );
+  document.title = pageTitle(query);
 });
 
 async function sendSearchRequest(query) {

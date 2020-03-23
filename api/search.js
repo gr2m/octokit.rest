@@ -1,5 +1,6 @@
 import { OPENAPI_PATHS } from "../public/components/openapi-paths.js";
 import { searchResults } from "../public/components/search-results.js";
+import { pageTitle } from "../public/components/page-title.js";
 
 const allEndpointPaths = Object.keys(OPENAPI_PATHS);
 
@@ -52,7 +53,7 @@ module.exports = async (request, response) => {
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Search: "${query}"</title>
+<title>${pageTitle(query)}</title>
 <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
