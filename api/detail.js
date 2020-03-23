@@ -123,6 +123,8 @@ module.exports = async (request, response) => {
     ${search({ query: `${endpoint.method} ${endpoint.url}` })}
     </div>
 
+    <div id="details">
+
     <section>
       <h2>${endpoint.name} (<code>${route}</code>)</h2>
 
@@ -175,7 +177,10 @@ module.exports = async (request, response) => {
       endpoint.documentationUrl
     }">GitHub developer guides</a></p>
 
+    </div>
+
     <script type="module" src="/detail.js"></script>
+    <script type="module" src="/search.js"></script>
   </body>
 </html>
 `);
