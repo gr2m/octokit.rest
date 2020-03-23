@@ -117,16 +117,18 @@ module.exports = async (request, response) => {
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-    <h1>octokit.rest</h1>
+    <header>
+      <h2>octokit.rest</h2>
+    </header>
 
     <div id="search">
     ${search({ query: `${endpoint.method} ${endpoint.url}` })}
     </div>
 
-    <div id="details">
+    <main id="details" class="details">
 
     <section>
-      <h2>${endpoint.name} (<code>${route}</code>)</h2>
+      <h2>${endpoint.name}</h2>
 
       ${markdown.render(endpoint.description)}
     </section>
@@ -177,7 +179,7 @@ module.exports = async (request, response) => {
       endpoint.documentationUrl
     }">GitHub developer guides</a></p>
 
-    </div>
+    </main>
 
     <script type="module" src="/detail.js"></script>
     <script type="module" src="/search.js"></script>

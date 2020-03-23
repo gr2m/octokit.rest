@@ -11,18 +11,12 @@ body {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
   font-size: 100%;
   line-height: 1.5;
+  padding: 3vw;
 }
 
 /* Color */
 a {
   color: hsl(210, 53%, 51%);
-}
-
-/* Layout */
-body > * {
-  margin: 3rem auto;
-  padding: 1.5rem;
-  max-width: 45rem;
 }
 
 /* Form */
@@ -37,11 +31,22 @@ input {
 input {
   margin-top: 0.375em;
 }
+input:focus::placeholder {
+  color: hsl(0, 0%, 75%);
+}
 button {
   font-size: inherit;
   font-family: inherit;
   border: 1px solid hsl(0, 0%, 75%);
   padding: 0.375em 0.75em;
+}
+
+
+label.has-placeholder > span,
+label.has-placeholder > br {
+  /* @hidden-accessible */
+  position: absolute;
+  left: -9999px;
 }
 
 /* Code */
@@ -128,4 +133,34 @@ td {
 }
 .note > :last-child {
   margin-bottom: 0;
+}
+
+/* Header */
+body > header {
+  /* @hidden-accessible */
+  position: absolute;
+  left: -9999px;
+}
+form h1 {
+  font: inherit;
+  margin: 0;
+  display: inline;
+}
+
+/* Search */
+.search {
+  font-size: 3vw;
+  margin-bottom: 1.5em;
+  margin-left: calc(-0.75em - 1px);
+}
+
+/* Details */
+.details {
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+}
+.details > * {
+  margin: 3rem auto;
+  padding: 1.5rem;
+  max-width: 45rem;
 }

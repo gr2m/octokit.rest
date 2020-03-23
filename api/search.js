@@ -57,7 +57,9 @@ module.exports = async (request, response) => {
 <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-<h1>octokit.rest</h1>
+<header>
+  <h2>octokit.rest</h2>
+</header>
 
 <div id="search">
 ${search({ query, results })}
