@@ -4,32 +4,34 @@ import { searchResults } from "../public/components/search-results.js";
 const allEndpointPaths = Object.keys(OPENAPI_PATHS);
 
 module.exports = async (request, response) => {
-  const query = request.query.query;
+  const query = request.query.query || "";
   const queryRegex = new RegExp(`(${query})`, "i");
   const { method, path } = toMethodAndPath(query);
   const results = [];
 
-  for (const endpointPath of allEndpointPaths) {
-    if (path && endpointPath.substr(0, path.length) !== path) continue;
+  if (query) {
+    for (const endpointPath of allEndpointPaths) {
+      if (path && endpointPath.substr(0, path.length) !== path) continue;
 
-    if (method) {
-      const operation = OPENAPI_PATHS[endpointPath][method.toLowerCase()];
-      if (!operation) continue;
+      if (method) {
+        const operation = OPENAPI_PATHS[endpointPath][method.toLowerCase()];
+        if (!operation) continue;
 
-      results.push([method, endpointPath, operation]);
-      continue;
-    }
-
-    for (const [method, operation] of Object.entries(
-      OPENAPI_PATHS[endpointPath]
-    )) {
-      if (path) {
-        results.push([method.toUpperCase(), endpointPath, operation]);
+        results.push([method, endpointPath, operation]);
         continue;
       }
 
-      if (queryRegex.test(operation.summary)) {
-        results.push([method.toUpperCase(), endpointPath, operation]);
+      for (const [method, operation] of Object.entries(
+        OPENAPI_PATHS[endpointPath]
+      )) {
+        if (path) {
+          results.push([method.toUpperCase(), endpointPath, operation]);
+          continue;
+        }
+
+        if (queryRegex.test(operation.summary)) {
+          results.push([method.toUpperCase(), endpointPath, operation]);
+        }
       }
     }
   }
@@ -56,15 +58,13 @@ module.exports = async (request, response) => {
 <body>
 <h1>octokit.rest</h1>
 
-<form action="/search">
+<form action="/">
 <label>
 What would you like to request?<br />
 <input type="text" value="${query}" name="query" />
 </label>
 <button type="submit">Go</button>
 </form>
-
-<h2>Results</h2>
 
 <div id="results">
 ${searchResults({ query, results })}
