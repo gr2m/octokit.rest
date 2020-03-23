@@ -118,12 +118,10 @@ module.exports = async (request, response) => {
   <body>
     <h1>octokit.rest</h1>
 
-    <form action="/search">
+    <form action="/">
       <label>
         What would you like to request?<br />
-        <input type="text" value="${
-          endpoint.method
-        } ${path}" name="query" />
+        <input type="text" value="${endpoint.method} ${path}" name="query" />
       </label>
       <button type="submit">Go</button>
     </form>
@@ -203,7 +201,7 @@ module.exports = async (request, response) => {
   <body>
     <h1>octokit.rest</h1>
 
-    <form action="/search">
+    <form action="/">
       <label>
         What would you like to request?<br />
         <input type="text" value="${method} ${path}" name="query" />

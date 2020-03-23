@@ -6,7 +6,7 @@
       "dest": "/api/detail?method=$method&path=$path"
     },
     {
-      "src": "/search",
+      "src": "/",
       "headers": { "cache-control": "s-maxage=604800" },
       "dest": "/api/search"
     }
