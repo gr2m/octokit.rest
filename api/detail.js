@@ -5,6 +5,7 @@ import { OPENAPI_PATHS } from "../public/components/openapi-paths.js";
 import { parameterField } from "../public/components/parameter-field.js";
 import { requestPreview } from "../public/components/request-preview.js";
 import { getResponseHTML } from "../public/components/get-response-html.js";
+import { search } from "../public/components/search.js";
 
 const MarkdownIt = require("markdown-it");
 
@@ -118,13 +119,11 @@ module.exports = async (request, response) => {
   <body>
     <h1>octokit.rest</h1>
 
-    <form action="/">
-      <label>
-        What would you like to request?<br />
-        <input type="text" value="${endpoint.method} ${path}" name="query" />
-      </label>
-      <button type="submit">Go</button>
-    </form>
+    <div id="search">
+    ${search({ query: `${endpoint.method} ${endpoint.url}` })}
+    </div>
+
+    <div id="details">
 
     <section>
       <h2>${endpoint.name} (<code>${route}</code>)</h2>
@@ -178,7 +177,10 @@ module.exports = async (request, response) => {
       endpoint.documentationUrl
     }">GitHub developer guides</a></p>
 
+    </div>
+
     <script type="module" src="/detail.js"></script>
+    <script type="module" src="/search.js"></script>
   </body>
 </html>
 `);

@@ -3,12 +3,14 @@ import { pageTitle } from "/components/page-title.js";
 
 const $queryField = document.querySelector(`input[name="query"]`);
 const $results = document.querySelector(`#results`);
+const $details = document.querySelector(`#details`);
 
 $queryField.addEventListener("keyup", async function(event) {
   const query = $queryField.value.trim();
   const results = query ? await sendSearchRequest(query) : [];
 
   $results.innerHTML = await searchResults({ query, results });
+  $details.style.display = "none";
 
   window.history.pushState(
     {},

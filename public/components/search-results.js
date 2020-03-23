@@ -1,7 +1,9 @@
 export function searchResults({ query, results }) {
   const queryRegex = new RegExp(`(${query})`, "i");
 
-  const resultsHTML = results
+  if (!results) return "";
+
+  const resultsHTML = results ? results
     .filter(Boolean)
     .map(([method, path, operation]) => {
       const route = `${method} ${path}`.replace(queryRegex, `<mark>$1</mark>`);
@@ -13,7 +15,7 @@ export function searchResults({ query, results }) {
 </a>
 </article>`;
     })
-    .join("\n");
+    .join("\n") : "";
 
   if (resultsHTML) {
     return `<h2>Results</h2>
