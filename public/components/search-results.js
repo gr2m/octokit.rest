@@ -3,22 +3,30 @@ export function searchResults({ query, results }) {
 
   if (!results) return "";
 
-  const resultsHTML = results ? results
-    .filter(Boolean)
-    .map(([method, path, operation]) => {
-      const route = `${method} ${path}`.replace(queryRegex, `<mark>$1</mark>`);
-      const summary = operation.summary.replace(queryRegex, `<mark>$1</mark>`);
-      return `<article>
+  const resultsHTML = results
+    ? results
+        .filter(Boolean)
+        .map(([method, path, operation]) => {
+          const route = `${method} ${path}`.replace(
+            queryRegex,
+            `<mark>$1</mark>`
+          );
+          const summary = operation.summary.replace(
+            queryRegex,
+            `<mark>$1</mark>`
+          );
+          return `<article>
 <a href="/${method}/${path}">
-  ${summary}
-  (<code>${route}</code>)
+  <h3>${summary}</h3>
+  <pre><code>${route}</code></pre>
 </a>
 </article>`;
-    })
-    .join("\n") : "";
+        })
+        .join("\n")
+    : "";
 
   if (resultsHTML) {
-    return `<h2>Results</h2>
+    return `<h2>${results.length} Results</h2>
     
   ${resultsHTML}`;
   }

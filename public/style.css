@@ -41,7 +41,6 @@ button {
   padding: 0.375em 0.75em;
 }
 
-
 label.has-placeholder > span,
 label.has-placeholder > br {
   /* @hidden-accessible */
@@ -152,6 +151,21 @@ form h1 {
   font-size: 3vw;
   margin-bottom: 1.5em;
   margin-left: calc(-0.75em - 1px);
+}
+
+/* Search results */
+.results article a {
+  display: block;
+  padding: 1em;
+  margin: 0 -1em;
+
+  text-decoration: none;
+}
+.results article a:hover {
+  background: #ffc;
+}
+.results article a > * {
+  margin: 0;
 }
 
 /* Details */
