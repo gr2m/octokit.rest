@@ -7,7 +7,7 @@ function radioFieldSet({ name, options, selectedValue }) {
           <input type="radio" name="${name}" value="${option}" ${
       selectedValue === option ? `checked` : ""
     } />
-          <code>${option}</code>
+          <span>${option}</span>
         </label>
       </li>
     `);
@@ -29,7 +29,7 @@ function parameterField({ name, type, value }) {
   if (type === "integer") {
     return `
       <label>
-        <code>${name}</code><br />
+        <span>${name}</span>
         <input type="number" name="${name}" value="${value}" />
       </label>
     `;
@@ -44,7 +44,7 @@ function parameterField({ name, type, value }) {
   // Text field (Default)
   return `
     <label>
-      <code>${name}</code><br />
+      <span>${name}</span>
       <input type="text" name="${name}" value="${value}" />
     </label>
   `;

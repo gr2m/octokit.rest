@@ -55,16 +55,14 @@ module.exports = async (request, response) => {
             endpoint.parameters
           )) {
             parameters.push(`
-            <tr>
-              <td>${parameterField({
+            <dt>${parameterField({
                 name,
                 type,
                 value: request.query[name] || ""
-              })}</td>
-              <td>
+              })}</dt>
+              <dd>
               ${markdown.render(`\`${type}\` ` + description)}
-              </td>
-            </tr>
+              </dd>
             `);
           }
 
@@ -138,22 +136,18 @@ module.exports = async (request, response) => {
 
     <section>
       <h2>Parameters</h2>
-      <form action="#request-preview" id="parametersForm">
-        <table>
-          <tbody>
-            <tr>
-              <td>
-                <label>
-                  <code>token</code><br />
-                  <input type="text" name="token" value="${request.query
-                    .token || ""}" />
-                </label>
-              </td>
-              <td><p><code>string</code> The token will be passed in the authorization header.</p></td>
-            </tr>
-            ${parameters.join("")}
-          </tbody>
-        </table>
+      <form action="#request-preview" id="parametersForm" class="parameters">
+        <dl>
+          <dt>
+            <label>
+              <span>token</span>
+              <input type="text" name="token" value="${request.query
+                .token || ""}" />
+            </label>
+          </dt>
+          <dd><p><code>string</code> The token will be passed in the authorization header.</p></dd>
+          ${parameters.join("")}
+        </dl>
         <p><button type="submit">Update request preview</button></p>
       </form>
   

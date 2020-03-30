@@ -183,15 +183,13 @@ form h1 {
   /* max-width: 45rem; */
 }
 
-.details table label {
-  display: flex;
-  align-items: center;
-}
-.details table input {
+/* Parameters */
+.parameters input {
   width: 10em;
   display: block;
+  margin: 0;
 }
-.details table label code {
+.parameters label span {
   width: 7em;
   text-align: left;
   background: transparent;
@@ -199,17 +197,33 @@ form h1 {
   font-weight: bold;
   font-family: inherit;
 }
-.details table td {
+.parameters dt,
+.parameters dd {
   border: none;
-  padding: 1em;
+  padding: 1em 0;
 }
-.details table td:first-child {
-  padding-left: 0;
+.parameters dt {
+  border-top: 1px solid hsl(0, 0%, 80%);
 }
-.details table td:last-child {
-  padding-right: 0;
+.parameters dd {
+  margin-left: 0;
 }
 
-.details table td p {
+.parameters dd p {
   margin: 0;
+}
+
+@media (min-width: 60em) {
+  .parameters dl {
+    display: grid;
+    grid-template-columns: max-content auto;
+  }
+  .parameters label {
+    display: flex;
+    align-items: center;
+  }
+  .parameters dd {
+    border-top: 1px solid hsl(0, 0%, 80%);
+    padding-left: 2em;
+  }
 }
