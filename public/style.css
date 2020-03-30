@@ -189,14 +189,6 @@ form h1 {
   display: block;
   margin: 0;
 }
-.parameters label span {
-  width: 7em;
-  text-align: left;
-  background: transparent;
-  border: 0;
-  font-weight: bold;
-  font-family: inherit;
-}
 .parameters dt,
 .parameters dd {
   border: none;
@@ -221,6 +213,9 @@ form h1 {
   .parameters label {
     display: flex;
     align-items: center;
+  }
+  .parameters label span {
+    min-width: 7em;
   }
   .parameters dd {
     border-top: 1px solid hsl(0, 0%, 80%);
