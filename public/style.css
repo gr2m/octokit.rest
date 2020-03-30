@@ -154,17 +154,21 @@ form h1 {
 }
 
 /* Search results */
-.results article a {
+.results ul {
+  list-style: none;
+  padding: 0;
+}
+.results li a {
   display: block;
   padding: 1em;
   margin: 0 -1em;
 
   text-decoration: none;
 }
-.results article a:hover {
+.results li a:hover {
   background: #ffc;
 }
-.results article a > * {
+.results li a > * {
   margin: 0;
 }
 

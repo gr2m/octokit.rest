@@ -15,12 +15,12 @@ export function searchResults({ query, results }) {
             queryRegex,
             `<mark>$1</mark>`
           );
-          return `<article>
+          return `<li>
 <a href="/${method}/${path}">
   <h3>${summary}</h3>
   <pre><code>${route}</code></pre>
 </a>
-</article>`;
+</li>`;
         })
         .join("\n")
     : "";
@@ -28,7 +28,9 @@ export function searchResults({ query, results }) {
   if (resultsHTML) {
     return `<h2>${results.length} Results</h2>
     
-  ${resultsHTML}`;
+  <ul>
+    ${resultsHTML}
+  </ul>`;
   }
 
   if (query) {
