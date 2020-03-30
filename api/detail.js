@@ -61,8 +61,9 @@ module.exports = async (request, response) => {
                 type,
                 value: request.query[name] || ""
               })}</td>
-              <td><code>${type}</code></td>
-              <td>${markdown.render(description)}</td>
+              <td>
+              ${markdown.render(`\`${type}\` ` + description)}
+              </td>
             </tr>
             `);
           }
@@ -139,13 +140,6 @@ module.exports = async (request, response) => {
       <h2>Parameters</h2>
       <form action="#request-preview" id="parametersForm">
         <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Description</th>
-            </tr>
-          </thead>
           <tbody>
             <tr>
               <td>
@@ -155,8 +149,7 @@ module.exports = async (request, response) => {
                     .token || ""}" />
                 </label>
               </td>
-              <td><code>string</code></td>
-              <td><p>The token will be passed in the authorization header.</p></td>
+              <td><p><code>string</code> The token will be passed in the authorization header.</p></td>
             </tr>
             ${parameters.join("")}
           </tbody>

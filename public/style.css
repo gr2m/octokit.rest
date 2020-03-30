@@ -104,7 +104,7 @@ th {
   font-weight: 700;
 }
 tbody {
-  vertical-align: middle;
+  vertical-align: top;
   border-color: inherit;
 }
 tr {
@@ -180,5 +180,36 @@ form h1 {
 .details > * {
   margin: 3rem auto;
   padding: 1.5rem;
-  max-width: 45rem;
+  /* max-width: 45rem; */
+}
+
+.details table label {
+  display: flex;
+  align-items: center;
+}
+.details table input {
+  width: 10em;
+  display: block;
+}
+.details table label code {
+  width: 7em;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  font-weight: bold;
+  font-family: inherit;
+}
+.details table td {
+  border: none;
+  padding: 1em;
+}
+.details table td:first-child {
+  padding-left: 0;
+}
+.details table td:last-child {
+  padding-right: 0;
+}
+
+.details table td p {
+  margin: 0;
 }
