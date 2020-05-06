@@ -97,7 +97,7 @@ module.exports = async (request, response) => {
             method,
             url,
             headers: {
-              authorization: `token ${token}`,
+              authorization: `bearer ${token}`,
               accept: "application/vnd.github.v3+json",
               "user-agent": `octokit.rest`
             },
