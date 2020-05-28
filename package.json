@@ -19,6 +19,7 @@
     "semantic-release": "^17.0.4"
   },
   "scripts": {
+    "build": "node scripts/generate-openapi-paths-file.js",
     "start": "now dev"
   },
   "keywords": [],
