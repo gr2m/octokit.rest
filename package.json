@@ -22,7 +22,9 @@
   "scripts": {
     "update-openapi-paths": "node scripts/generate-openapi-paths-file.js",
     "start": "now dev",
-    "cypress:open": "cypress open"
+    "test": "npm run cypress:run -- --spec 'cypress/integration/happy.spec.js'",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "keywords": [],
   "author": "Gregor Martynus (https://twitter.com/gr2m)",
