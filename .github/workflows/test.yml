@@ -1,20 +1,24 @@
 name: End-to-end tests
-on: [push]
+on: [deployment_status]
+
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+    if: ${{ github.event.deployment_status.state == 'success' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
+      - name: debug
+        uses: hmarr/debug-action@master
+        env:
+          TEST_URL: ${{ github.event.deployment_status.target_url }}
       - name: Cypress run
         uses: cypress-io/github-action@v1
         with:
-          start: npm start
-          wait-on: http://localhost:3000
           spec: cypress/integration/happy.spec.js
           record: true
         env:
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TEST_URL: ${{ github.event.deployment_status.target_url }}
