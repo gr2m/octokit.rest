@@ -1,0 +1,44 @@
+name: End-to-end tests
+on: [deployment_status]
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.deployment_status.state == 'success' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: debug
+        uses: hmarr/debug-action@master
+        env:
+          TEST_URL: ${{ github.event.deployment_status.target_url }}
+      - name: Cypress run
+        id: cypress
+        uses: cypress-io/github-action@v1
+        # Continue the build in case of an error, as we need to set the
+        # commit status in the next step, both in case of success and failure
+        continue-on-error: true
+        with:
+          spec: cypress/integration/happy.spec.js
+          record: true
+          env: base_url=${{ github.event.deployment_status.target_url }}
+          ci-build-id: ${{ github.sha }}
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Action does not set commit/pull reques status automatically, because it
+      # is not triggered by the `push` event. So we have to set the commit
+      # status manually.
+      - name: Create commit status
+        uses: octokit/request-action@v2.x
+        id: create_status
+        with:
+          route: POST /repos/:repository/statuses/:sha
+          repository: ${{ github.repository }}
+          sha: ${{ github.sha }}
+          context: test
+          description: Cypress run
+          state: ${{ steps.cypress.outcome}}
+          target_url: https://dashboard.cypress.io/projects/4nc4rv/runs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

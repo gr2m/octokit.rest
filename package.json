@@ -15,12 +15,16 @@
   },
   "devDependencies": {
     "@octokit/routes": "29.0.0",
-    "now": "^17.0.4",
+    "cypress": "^4.7.0",
+    "now": "^19.0.1",
     "semantic-release": "^17.0.4"
   },
   "scripts": {
     "update-openapi-paths": "node scripts/generate-openapi-paths-file.js",
-    "start": "now dev"
+    "start": "now dev",
+    "test": "npm run cypress:run -- --spec 'cypress/integration/happy.spec.js'",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "keywords": [],
   "author": "Gregor Martynus (https://twitter.com/gr2m)",
