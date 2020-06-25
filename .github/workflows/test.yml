@@ -15,9 +15,6 @@ jobs:
       - name: Cypress run
         id: cypress
         uses: cypress-io/github-action@v2
-        # Continue the build in case of an error, as we need to set the
-        # commit status in the next step, both in case of success and failure
-        continue-on-error: true
         with:
           spec: cypress/integration/happy.spec.js
           record: true
@@ -30,6 +27,7 @@ jobs:
       # is not triggered by the `push` event. So we have to set the commit
       # status manually.
       - name: Create commit status
+        if: always()
         uses: octokit/request-action@v2.x
         id: create_status
         with:
