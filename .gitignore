@@ -1,4 +1,5 @@
-.now
 /node_modules
 cypress/videos
 cypress/screenshots
+
+.vercel

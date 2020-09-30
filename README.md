@@ -11,7 +11,7 @@ npm install
 Start local dev server
 
 ```
-npx now dev
+npm start
 ```
 
 ## License
