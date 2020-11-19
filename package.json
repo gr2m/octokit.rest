@@ -16,7 +16,7 @@
   "devDependencies": {
     "@octokit/routes": "29.0.0",
     "cypress": "^4.7.0",
-    "semantic-release": "^17.0.4",
+    "semantic-release": "^17.2.3",
     "vercel": "^20.1.1"
   },
   "scripts": {
