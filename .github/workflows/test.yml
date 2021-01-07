@@ -14,7 +14,7 @@ jobs:
           TEST_URL: ${{ github.event.deployment_status.target_url }}
       - name: Cypress run
         id: cypress
-        uses: cypress-io/github-action@v1
+        uses: cypress-io/github-action@v2
         # Continue the build in case of an error, as we need to set the
         # commit status in the next step, both in case of success and failure
         continue-on-error: true
@@ -39,6 +39,6 @@ jobs:
           context: test
           description: Cypress run
           state: ${{ steps.cypress.outcome}}
-          target_url: https://dashboard.cypress.io/projects/4nc4rv/runs
+          target_url: ${{ steps.cypress.outputs.dashboardUrl }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
