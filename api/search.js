@@ -18,7 +18,7 @@ module.exports = async (request, response) => {
         const operation = OPENAPI_PATHS[endpointPath][method.toLowerCase()];
         if (!operation) continue;
 
-        results.push([method, endpointPath, operation]);
+        results.push([method, endpointPath, toSearchData(operation)]);
         continue;
       }
 
@@ -26,12 +26,12 @@ module.exports = async (request, response) => {
         OPENAPI_PATHS[endpointPath]
       )) {
         if (path) {
-          results.push([method.toUpperCase(), endpointPath, operation]);
+          results.push([method.toUpperCase(), endpointPath, toSearchData(operation)]);
           continue;
         }
 
         if (queryRegex.test(operation.summary)) {
-          results.push([method.toUpperCase(), endpointPath, operation]);
+          results.push([method.toUpperCase(), endpointPath, toSearchData(operation)]);
         }
       }
     }
@@ -87,4 +87,13 @@ function toMethodAndPath(query) {
   }
 
   return {};
+}
+
+/**
+ * only return data that is actually needed for search results
+ */
+function toSearchData(operation) {
+  return {
+    summary: operation.summary
+  }
 }
