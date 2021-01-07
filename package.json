@@ -9,11 +9,11 @@
     "node": "12.x"
   },
   "dependencies": {
+    "@octokit/openapi": "^2.2.1",
     "@octokit/request": "^5.3.2",
     "markdown-it": "^10.0.0"
   },
   "devDependencies": {
-    "@octokit/routes": "29.0.0",
     "cypress": "^4.7.0",
     "semantic-release": "^17.2.3",
     "vercel": "^20.1.1"

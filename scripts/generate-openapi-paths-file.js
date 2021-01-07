@@ -1,11 +1,11 @@
-import { writeFileSync } from "fs";
+const { writeFileSync } = require("fs");
 
-import * as ROUTES from "@octokit/routes";
+const { schemas } = require("@octokit/openapi");
 
 writeFileSync(
   "public/components/openapi-paths.js",
   `export const OPENAPI_PATHS = ${JSON.stringify(
-    ROUTES.default["api.github.com"].paths,
+    schemas["api.github.com.deref"].paths,
     null,
     2
   )}`
