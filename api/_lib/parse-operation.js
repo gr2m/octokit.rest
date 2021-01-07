@@ -78,7 +78,6 @@ function parseOperation({ method, url }, operation) {
   const headerParameters = operation.parameters.filter(
     param => param.in === "header"
   );
-  const acceptHeader = headerParameters.find(param => param.name === "accept");
   const headers = headerParameters
     .filter(param => param.name !== "accept")
     .map(toHeader);
@@ -149,8 +148,6 @@ function parseOperation({ method, url }, operation) {
   }
 
   const endpoint = {
-    id,
-    scope,
     name: operation.summary,
     description: operation.description,
     method: method.toUpperCase(),
@@ -158,31 +155,9 @@ function parseOperation({ method, url }, operation) {
     parameters,
     headers,
     documentationUrl: operation.externalDocs.url,
-    isDeprecated: !!operation.deprecated,
-    isLegacy: operation["x-github"].legacy,
-    isEnabledForApps: operation["x-github"].enabledForApps,
-    isGithubCloudOnly: operation["x-github"].githubCloudOnly,
-    triggersNotification: operation["x-github"].triggersNotification,
     previews: operation["x-github"].previews,
-    responses,
-    changes: operation["x-changes"].map(change => {
-      const type = change.type.toUpperCase();
-      const before = toParamter(type, change.before);
-      const after = toParamter(type, change.after);
-
-      return {
-        type,
-        date: change.date,
-        note: change.note,
-        before,
-        after
-      };
-    })
+    responses
   };
-
-  if (acceptHeader.required) {
-    endpoint.headers.unshift(toHeader(acceptHeader));
-  }
 
   return endpoint;
 }
