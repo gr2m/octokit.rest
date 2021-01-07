@@ -5,12 +5,15 @@ const $queryField = document.querySelector(`input[name="query"]`);
 const $results = document.querySelector(`#results`);
 const $details = document.querySelector(`#details`);
 
-$queryField.addEventListener("keyup", async function(event) {
+$queryField.addEventListener("keyup", async function (event) {
   const query = $queryField.value.trim();
   const results = query ? await sendSearchRequest(query) : [];
 
   $results.innerHTML = await searchResults({ query, results });
-  $details.style.display = "none";
+
+  if ($details) {
+    $details.style.display = "none";
+  }
 
   window.history.pushState(
     {},
@@ -23,8 +26,8 @@ $queryField.addEventListener("keyup", async function(event) {
 async function sendSearchRequest(query) {
   const response = await fetch(`/api/search?query=${query}`, {
     headers: {
-      accept: "application/json"
-    }
+      accept: "application/json",
+    },
   });
   const results = await response.json();
   return results;
