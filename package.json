@@ -5,7 +5,6 @@
   "description": "Sourcecode for the octokit.rest website",
   "repository": "https://github.com/gr2m/octokit.rest",
   "main": "index.js",
-  "type": "module",
   "engines": {
     "node": "12.x"
   },
