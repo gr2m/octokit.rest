@@ -3,7 +3,7 @@
   "version": "0.0.0-development",
   "private": true,
   "description": "Sourcecode for the octokit.rest website",
-  "repository": "https://github.com/gr2m/octokit.rest",
+  "repository": "github:gr2m/octokit.rest",
   "main": "index.js",
   "engines": {
     "node": "12.x"
