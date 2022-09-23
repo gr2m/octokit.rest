@@ -1,13 +1,13 @@
 name: End-to-end tests
-on: [deployment_status]
-
+"on":
+  - deployment_status
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
     if: ${{ github.event.deployment_status.state == 'success' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: debug
         uses: hmarr/debug-action@master
         env:
@@ -23,9 +23,6 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Action does not set commit/pull reques status automatically, because it
-      # is not triggered by the `push` event. So we have to set the commit
-      # status manually.
       - name: Create commit status
         if: always()
         uses: octokit/request-action@v2.x
