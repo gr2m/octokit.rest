@@ -27,5 +27,8 @@
   },
   "keywords": [],
   "author": "Gregor Martynus (https://twitter.com/gr2m)",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.0.0"
+  }
 }
